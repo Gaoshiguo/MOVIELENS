@@ -43,7 +43,19 @@ print(rating_count_by_movie[:10])#将合并后的文件按照降序排列打印
 ![image](https://github.com/Gaoshiguo/MOVIELENS/blob/master/movielens/3.png)
 ![image](https://github.com/Gaoshiguo/MOVIELENS/blob/master/movielens/4.png)
 
-**我们可以看到数据被分成了训练集和测试集两个部分，但是数据非常多。笔者在后期实验中发现，如此之多的数据会在矩阵运算中发生溢出**  
+**我们可以看到数据被分成了训练集和测试集两个部分，但是数据非常多。笔者在后期实验中发现，如此之多的数据会在矩阵运算中发生溢出同时也为了运算简便，展示效果，所以我们对数据采取抽样化处理具体操作如下：**  
+
+_我们使用pandas包中的sample函数对整个数据集中的文件随机抽样提取其**0.001%**的数据_
+
+`<ratingData =ratingsData.sample(n=None,frac=0.0001,replace=False,weights=None,random_state=None,axis=None)
+movieData =moviessData.sample(n=None,frac=0.0001,replace=False,weights=None,random_state=None,axis=None)>`  
+
+
+![image](https://github.com/Gaoshiguo/MOVIELENS/blob/master/movielens/5.png)
+![image](https://github.com/Gaoshiguo/MOVIELENS/blob/master/movielens/6.png)
+
+_可以看到抽样化处理后数据变得很少，训练集只有1303条，测试集只有671条。方便运算_
+
 
 
 
