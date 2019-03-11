@@ -24,9 +24,9 @@ print(movie)#读取movie文件数据
 
 ```
 代码运行截图如下：  
-![pandas读取数据集]({{site.baseurl}}/https://github.com/Gaoshiguo/MOVIELENS/blob/master/movielens/1.png)  
+![pandas读取数据集](https://github.com/Gaoshiguo/MOVIELENS/blob/master/movielens/1.png)  
 代码运行效果图如下：
-![image]({{site.baseurl}}/https://github.com/Gaoshiguo/MOVIELENS/blob/master/movielens/2.png)  
+![image](https://github.com/Gaoshiguo/MOVIELENS/blob/master/movielens/2.png)  
 我们可以看到读取的rating文件数据的前五项包括了`<userId>` `<movieId>` `<rating>` `<timestap>`  
 
 
@@ -40,8 +40,8 @@ rating_count_by_movie.sort_values(by=['rating_count'], ascending=False, inplace=
 print(rating_count_by_movie[:10])#将合并后的文件按照降序排列打印
 
 ```
-![image]({{site.baseurl}}/https://github.com/Gaoshiguo/MOVIELENS/blob/master/movielens/3.png)
-![image]({{site.baseurl}}/https://github.com/Gaoshiguo/MOVIELENS/blob/master/movielens/4.png)
+![image](https://github.com/Gaoshiguo/MOVIELENS/blob/master/movielens/3.png)
+![image](https://github.com/Gaoshiguo/MOVIELENS/blob/master/movielens/4.png)
 
 **我们可以看到数据被分成了训练集和测试集两个部分，但是数据非常多。笔者在后期实验中发现，如此之多的数据会在矩阵运算中发生溢出**  
 
