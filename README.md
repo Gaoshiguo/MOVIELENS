@@ -23,6 +23,32 @@ movie.head(10)
 print(movie)#读取movie文件数据
 
 ```
+代码运行截图如下：  
+![pandas读取数据集]({{site.baseurl}}/https://github.com/Gaoshiguo/MOVIELENS/blob/master/movielens/1.png)  
+代码运行效果图如下：
+![image]({{site.baseurl}}/https://github.com/Gaoshiguo/MOVIELENS/blob/master/movielens/2.png)  
+我们可以看到读取的rating文件数据的前五项包括了`<userId>` `<movieId>` `<rating>` `<timestap>`  
+
+
+## 二、对数据进行预处理
+我们使用`<merge>`函数对ratings和movies两个文件进行合并，关联关系使用userId，合并完之后，再将数据按比率分成训练集和测试集
+具体代码如下：
+```
+rating_count_by_movie = data.groupby(['movieId', 'title'], as_index=False)['rating'].count()
+rating_count_by_movie.columns = ['movieId', 'title', 'rating_count']
+rating_count_by_movie.sort_values(by=['rating_count'], ascending=False, inplace=True)
+print(rating_count_by_movie[:10])#将合并后的文件按照降序排列打印
+
+```
+![image]({{site.baseurl}}/https://github.com/Gaoshiguo/MOVIELENS/blob/master/movielens/3.png)
+![image]({{site.baseurl}}/https://github.com/Gaoshiguo/MOVIELENS/blob/master/movielens/4.png)
+
+**我们可以看到数据被分成了训练集和测试集两个部分，但是数据非常多。笔者在后期实验中发现，如此之多的数据会在矩阵运算中发生溢出**  
+
+
+
+
+
 
 
 
