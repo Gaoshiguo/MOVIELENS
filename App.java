@@ -25,6 +25,12 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Scanner;
+import java.io.BufferedWriter;   
+import java.io.FileOutputStream;   
+import java.io.FileWriter;   
+import java.io.IOException;   
+import java.io.OutputStreamWriter;   
+import java.io.RandomAccessFile;   
 
 /**
  * 推荐思路
@@ -53,7 +59,7 @@ public class App {
             UserSimilarity userSimilarity = new PearsonCorrelationSimilarity(dataModel);
 
             //定义用户的2-最近邻
-            UserNeighborhood userNeighborhood = new NearestNUserNeighborhood(2, userSimilarity, dataModel);
+            UserNeighborhood userNeighborhood = new NearestNUserNeighborhood(5, userSimilarity, dataModel);
             //定义推荐引擎
             Recommender recommender = new GenericUserBasedRecommender(dataModel,userNeighborhood, userSimilarity);
             //从数据模型中获取所有用户ID迭代器
@@ -61,26 +67,81 @@ public class App {
             //通过迭代器遍历所有用户ID
             while (usersIterator.hasNext()) {
               System.out.println("================================================");
+              try {   
+                  // 打开一个随机访问文件流，按读写方式   
+                  RandomAccessFile randomFile = new RandomAccessFile("D://Python代码练习//item.txt", "rw");   
+                  // 文件长度，字节数   
+                  long fileLength = randomFile.length();   
+                  // 将写文件指针移到文件尾。   
+                  randomFile.seek(fileLength);                                 
+                  randomFile.write("===========\r\n".getBytes());
+                  randomFile.close();   
+              } catch (IOException e) {   
+                  e.printStackTrace();   
+              }  
+              
+              try {   
+                  // 打开一个随机访问文件流，按读写方式   
+                  RandomAccessFile randomFile = new RandomAccessFile("D://Python代码练习//predicts.txt", "rw");   
+                  // 文件长度，字节数   
+                  long fileLength = randomFile.length();   
+                  // 将写文件指针移到文件尾。   
+                  randomFile.seek(fileLength);                                 
+                  randomFile.write("===========\r\n".getBytes());
+                  randomFile.close();   
+              } catch (IOException e) {   
+                  e.printStackTrace();   
+              }  
+              
                 //用户ID
                 long userID = usersIterator.nextLong();
                 //用户ID
                 LongPrimitiveIterator otherusersIterator = dataModel.getUserIDs();
                 //遍历用户ID，计算任何两个用户的相似度
-                while (otherusersIterator.hasNext()) {
-                    Long otherUserID = otherusersIterator.nextLong();
-                    System.out.println("用户 " + userID + " 与用户 " + otherUserID + " 的相似度为："
-                            + userSimilarity.userSimilarity(userID, otherUserID));
-                }
+                //while (otherusersIterator.hasNext()) {
+                    //Long otherUserID = otherusersIterator.nextLong();
+                    //System.out.println("用户 " + userID + " 与用户 " + otherUserID + " 的相似度为："
+                           // + userSimilarity.userSimilarity(userID, otherUserID));
+                //}
                 //userID的N-最近邻
                 long[] userN = userNeighborhood.getUserNeighborhood(userID);
-                //用户userID的推荐物品，最多推荐两个
-                List<RecommendedItem> recommendedItems = recommender.recommend(userID, 10);
+                //用户userID的推荐物品，最多推荐50个
+                List<RecommendedItem> recommendedItems = recommender.recommend(userID, 50);
                 System.out.println("用户 "+userID + " 的最相近的两个相邻用户是 "+ Arrays.toString(userN));
                 System.out.println(recommendedItems);  
                 if (recommendedItems.size() > 0) {
         
                     for (RecommendedItem item : recommendedItems) {
-                        System.out.println("推荐的物品"+ item.getItemID()+"预测评分是 "+ item.getValue());                                         
+                        System.out.println("推荐的物品"+ item.getItemID()+"预测评分是 "+ item.getValue());                                           
+                        try {   
+                            // 打开一个随机访问文件流，按读写方式   
+                            RandomAccessFile randomFile = new RandomAccessFile("D://Python代码练习//item.txt", "rw");   
+                            // 文件长度，字节数   
+                            long fileLength = randomFile.length();   
+                            // 将写文件指针移到文件尾。   
+                            randomFile.seek(fileLength);  
+                           String s2=new String(String.valueOf(item.getItemID()).getBytes(),"iso8859-1"); 
+                            randomFile.writeBytes(s2);
+                            randomFile.write("\r\n".getBytes());
+                            randomFile.close();   
+                        } catch (IOException e) {   
+                            e.printStackTrace();   
+                        }   
+                        
+                        try {   
+                            // 打开一个随机访问文件流，按读写方式   
+                            RandomAccessFile randomFile = new RandomAccessFile("D://Python代码练习//predicts.txt", "rw");   
+                            // 文件长度，字节数   
+                            long fileLength = randomFile.length();   
+                            // 将写文件指针移到文件尾。   
+                            randomFile.seek(fileLength);  
+                           String s2=new String(String.valueOf(item.getValue()).getBytes(),"iso8859-1"); 
+                            randomFile.writeBytes(s2);
+                            randomFile.write("\r\n".getBytes());                            
+                            randomFile.close();   
+                        } catch (IOException e) {   
+                            e.printStackTrace();   
+                        }   
                     }
                 } else {
                     System.out.println("无任何物品推荐");
@@ -88,7 +149,7 @@ public class App {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        } 
     }
 
 }
